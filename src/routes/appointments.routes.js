@@ -1,12 +1,30 @@
 const { Router } = require('express');
 
 const CreateAppointmentsService = require('../services/CreateAppointmentsService');
+const ListAppointmentsService = require('../services/ListAppointmentsService');
 
 const appointments = Router();
 
 const authenticated = require('../middlewares/ensureAuthenticated');
 
 appointments.use(authenticated);
+
+appointments.get('/', async (request, response) => {
+  const listAppointments = new ListAppointmentsService();
+  
+  const user_id = request.userId;
+
+  try {
+    const appointments = await listAppointments.execute({
+      user_id
+    })
+  
+    return response.json(appointments);
+  } catch (err) {
+    return response.status(400).json({error: err.message})
+  }
+
+})
 
 appointments.post('/', async (request, response ) => {
   const { title, description, date } = request.body;

@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   },
   appointments: [{
     type: Schema.Types.ObjectId,
-    ref: 'Appointments'
+    ref: 'Appointment'
   }]
 },{
   timestamps: true,
